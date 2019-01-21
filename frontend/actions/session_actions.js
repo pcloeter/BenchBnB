@@ -13,7 +13,7 @@ const receiveCurrentUser= (user) => ({
   user,
 });
 
-const logoutUser = () => ({
+const logoutCurrentUser = () => ({
   type: LOGOUT_CURRENT_USER,
 });
 
@@ -44,7 +44,7 @@ export const signup = (user) => {
 
 export const logout () => {
   return dispatch => {
-    return ApiUtils.logoutUser().then( () => {
+    return ApiUtils.logoutCurrentUser().then( () => {
       return dispatch(logoutUser);
     })
   }
