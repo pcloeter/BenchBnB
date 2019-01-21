@@ -4,41 +4,48 @@ import ApiUtils from '../util/session_api_util';
 // export const LOGIN_USER
 // export const LOGOUT
 // export const SIGN_UP
-export const RECEIVE_USER = "RECEIVE_USER";
-export const LOGOUT_USER = "LOGOUT_USER";
+export const RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
+export const LOGOUT_CURRENT_USER = "LOGOUT_CURRENT_USER";
 export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 
-const login = (user) => ({
-  type: RECEIVE_USER,
+const receiveCurrentUser= (user) => ({
+  type: RECEIVE_CURRENT_USER,
   user,
 });
 
-const logout = () => ({
-  type: LOGOUT_USER,
+const logoutUser = () => ({
+  type: LOGOUT_CURRENT_USER,
 });
 
-const signup = (user) => ({
-  type: RECEIVE_USER,
-  user,
+const receiveErrors = (errors) => ({
+  type: RECEIVE_ERRORS,
+  errors,
 });
 
-// export const fetchChirps = () => dispatch => {
-//   return getChirps()
-//     .then(chirps => dispatch(receiveChirps(chirps)));
-// }
 
 
 // TODO
-const receiveCurrentUser = (currentUser) => (dispatch) => {
-  return (ApiUtils.signup(currentUser)).then(
-    return dispatch(signup(currentUser)));
+
+export const login = (user) => {
+  return dispatch => {
+    return ApiUtils.login(user).then( user => {
+      return dispatch(receiveCurrentUser(user));
+    })
   }
 };
 
-const logoutCurrentUser = () => (dispatch) => {
-
+export const signup = (user) => {
+  return dispatch => {
+    return ApiUtils.signup(user).then( user => {
+      return dispatch(receiveCurrentUser(user));
+    })
+  }
 };
 
-const receiveErrors (errors) => (dispatch) => {
-
-};
+export const logout () => {
+  return dispatch => {
+    return ApiUtils.logoutUser().then( () => {
+      return dispatch(logoutUser);
+    })
+  }
+}
