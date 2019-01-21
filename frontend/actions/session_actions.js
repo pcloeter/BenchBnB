@@ -8,17 +8,17 @@ export const RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
 export const LOGOUT_CURRENT_USER = "LOGOUT_CURRENT_USER";
 export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 
-const receiveCurrentUser= (user) => ({
+export const receiveCurrentUser= (user) => ({
   type: RECEIVE_CURRENT_USER,
   currentUser,
 });
 
-const logoutCurrentUser = () => ({
+export const logoutCurrentUser = () => ({
   type: LOGOUT_CURRENT_USER,
 });
 
-const receiveErrors = (errors) => ({
-  type: RECEIVE_ERRORS,
+export const receiveErrors = (errors) => ({
+  type: RECEIVE_SESSION_ERRORS,
   errors,
 });
 
@@ -30,22 +30,26 @@ export const login = (user) => {
   return dispatch => {
     return ApiUtils.login(user).then( user => {
       return dispatch(receiveCurrentUser(user));
-    })
-  }
+    }), (error) => {
+      return dispatch(receiveErrors(error.responseJSON));
+    };
+  };
 };
 
 export const signup = (user) => {
   return dispatch => {
     return ApiUtils.signup(user).then( user => {
       return dispatch(receiveCurrentUser(user));
-    })
-  }
+    }), (error) => {
+      return dispatch(receiveErrors(error.responseJSON));
+    };
+  };
 };
 
-export const logout () => {
+export const logout = () => {
   return dispatch => {
-    return ApiUtils.logoutCurrentUser().then( () => {
-      return dispatch(logoutUser);
-    })
-  }
-}
+    return ApiUtils.logout().then( () => {
+      return dispatch(logoutCurrentUser());
+    });
+  };
+};
