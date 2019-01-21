@@ -9,3 +9,4 @@ const rootReducer = combineReducers({
   entities: entitiesReducer,
   errors: errorsReducer,
 });
+
